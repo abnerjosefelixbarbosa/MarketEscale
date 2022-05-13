@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>gerar_pedido</title>
+	<link rel="stylesheet" href="resources/css/gerar_pedido.css" />
+</h:head>
+<h:body>
+	<h:form id="form1">
+		<p:growl id="messages" />
+		<p:menubar styleClass="menubar">
+			<p:submenu label="Produto" styleClass="submenu">
+				<p:menuitem value="Adicionar" url="adicionar_produto.xhtml" />
+				<p:separator />
+				<p:menuitem value="Atualizar" url="atualizar_produto.xhtml" />
+			</p:submenu>
+			<p:submenu label="Pedido" styleClass="submenu">
+				<p:menuitem value="Gerar" url="gerar_pedido.xhtml" />
+				<p:separator />
+				<p:menuitem value="Alterar" url="alterar_pedido.xhtml" />
+			</p:submenu>
+		</p:menubar>
+	</h:form>
+	<br />
+	<p:panel>
+		<h:form id="form2" class="centro">
+			<p:growl id="messages" autoUpdate="true" />
+			<h:panelGrid>
+				<h:panelGroup class="centro">
+					<h1>Cadastro de pedido</h1>
+				</h:panelGroup>
+				<p:outputLabel value="Id do produto:" for="id" />
+				<p:inputNumber id="id" validatorMessage="id invalido!"
+					value="#{pedidoBeans.produto.id}" size="100">
+					<f:validateRequired />
+					<f:validateLongRange minimum="0" />
+				</p:inputNumber>
+				<p:outputLabel value="Quantidade:" for="quantidade" />
+				<p:inputNumber id="quantidade"
+					value="#{pedidoBeans.pedido.quantidade}"
+					validatorMessage="Quatidade invalida!" size="100">
+					<f:validateRequired />
+					<f:validateBean />
+				</p:inputNumber>
+				<p:outputLabel value="Nome do cliente:" for="cliente" />
+				<p:inputText id="cliente" value="#{pedidoBeans.pedido.nomeCliente}"
+					size="100">
+					<f:validateBean />
+				</p:inputText>
+				<h:panelGroup class="centro">
+					<p:commandButton value="Adicionar"
+						action="#{pedidoBeans.adicionar}" update="form2 form3"
+						styleClass="butao_adicionar" />
+				</h:panelGroup>
+			</h:panelGrid>
+		</h:form>
+	</p:panel>
+	<br />
+	<p:panel>
+		<h:form id="form3" styleClass="centro">
+			<p:growl id="messages" autoUpdate="true" />
+			<h:panelGrid>
+				<h:panelGroup class="centro">
+					<h1>Lista de pedido</h1>
+				</h:panelGroup>
+				<h:panelGroup class="centro">
+					<p:commandButton value="Gerar" action="#{pedidoBeans.gerar}"
+						update="form2" styleClass="butao_gerar" />
+				</h:panelGroup>
+				<h:panelGroup class="centro">
+					<p:commandButton value="Limpar" action="#{pedidoBeans.limparLista}"
+						update="table1" styleClass="butao_limpar" />
+				</h:panelGroup>
+				<p:dataTable id="table1" value="#{pedidoBeans.lista1}" var="l1"
+					border="1">
+					<p:column headerText="Data">#{l1.pedido.data}</p:column>
+					<p:column headerText="Quantidade">#{l1.pedido.quantidade}</p:column>
+					<p:column headerText="Nome do cliente">#{l1.pedido.nomeCliente}</p:column>
+					<p:column headerText="Id do produto">#{l1.produto.id}</p:column>
+				</p:dataTable>
+				<br />
+				<p:outputLabel value="Valor total:" />
+				<p:outputLabel value="#{pedidoBeans.valorTotal}" />
+			</h:panelGrid>
+		</h:form>
+	</p:panel>
+	<br />
+	<p:panel>
+		<h:panelGrid>
+			<h:form>
+				<h:panelGroup class="centro">
+					<h1>Lista de Produto</h1>
+				</h:panelGroup>
+				<h:panelGroup class="centro">
+					<p:commandButton value="Listar" action="#{produtoBeans.listar}"
+						update="table2" styleClass="butao_listar" />
+				</h:panelGroup>
+			</h:form>
+			<p:dataTable id="table2" value="#{produtoBeans.produtos}" var="p"
+				border="1">
+				<p:column headerText="Id">#{p.id}</p:column>
+				<p:column headerText="Descrição">#{p.descricao}</p:column>
+				<p:column headerText="Categória">#{p.categoria}</p:column>
+				<p:column headerText="Preço">#{p.preco}</p:column>
+			</p:dataTable>
+		</h:panelGrid>
+	</p:panel>
+</h:body>
+</html>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>alterar_pedido</title>
+	<link rel="stylesheet" href="resources/css/alterar_pedido.css" />
+</h:head>
+<h:body>
+	<h:form>
+		<p:growl id="messages" />
+		<p:menubar styleClass="menubar">
+			<p:submenu label="Produto" styleClass="submenu">
+				<p:menuitem value="Adicionar" url="adicionar_produto.xhtml" />
+				<p:separator />
+				<p:menuitem value="Atualizar" url="atualizar_produto.xhtml" />
+			</p:submenu>
+			<p:submenu label="Pedido" styleClass="submenu">
+				<p:menuitem value="Gerar" url="gerar_pedido.xhtml" />
+				<p:separator />
+				<p:menuitem value="Alterar" url="alterar_pedido.xhtml" />
+			</p:submenu>
+		</p:menubar>
+	</h:form>
+	<br />
+	<p:panel>
+		<h:panelGrid>
+			<h:form>
+				<h:panelGroup styleClass="centro">
+					<h1>Lista de pedido</h1>
+				</h:panelGroup>
+				<h:panelGroup styleClass="centro">
+					<p:commandButton value="Listar" action="#{pedidoBeans.listar}"
+						update="table1" styleClass="botao_listar" />
+				</h:panelGroup>
+			</h:form>
+			<br />
+			<p:dataTable id="table1" value="#{pedidoBeans.lista2}" var="l2"
+				border="1">
+				<p:column headerText="Data">#{l2.pedido.data}</p:column>
+				<p:column headerText="Quantidade">#{l2.pedido.quantidade}</p:column>
+				<p:column headerText="Cliente">#{l2.pedido.nomeCliente}</p:column>
+				<p:column headerText="Descrição">#{l2.produto.descricao}</p:column>
+				<p:column headerText="Alterar">
+					<p:commandButton value="Alterar"
+						oncomplete="PF('detalhesPedido').show()" process="@this"
+						update=":form2" styleClass="botao_alterar">
+						<f:setPropertyActionListener value="#{l2}"
+							target="#{pedidoBeans.pedidoProduto}">
+						</f:setPropertyActionListener>
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+		</h:panelGrid>
+	</p:panel>
+	<p:dialog modal="true" height="800" width="800"
+		widgetVar="detalhesPedido">
+		<p:panel>
+			<h:form id="form2" styleClass="centro">
+				<p:growl id="messages" autoUpdate="true" />
+				<h:panelGrid>
+					<h:panelGroup styleClass="centro">
+						<h1>Cadastro de pedido</h1>
+					</h:panelGroup>
+					<p:outputLabel value="Quantidade:" for="quantidade" />
+					<p:inputNumber id="quantidade"
+						value="#{pedidoBeans.pedidoProduto.pedido.quantidade}"
+						validatorMessage="invalido!" size="50">
+						<f:validateRequired />
+						<f:validateBean />
+					</p:inputNumber>
+					<p:outputLabel value="Cliente:" for="cliente" />
+					<p:inputText id="cliente"
+						value="#{pedidoBeans.pedidoProduto.pedido.nomeCliente}" size="50">
+						<f:validateBean />
+					</p:inputText>
+					<p:outputLabel value="Id do produto:" for="produto" />
+					<p:inputNumber id="produto"
+						value="#{pedidoBeans.pedidoProduto.produto.id}" size="50">
+						<f:validateBean />
+					</p:inputNumber>
+					<h:panelGroup styleClass="centro">
+						<p:commandButton value="Confirmar" action="#{pedidoBeans.alterar}"
+							update="form2 table1" styleClass="botao_confirmar" />
+					</h:panelGroup>
+				</h:panelGrid>
+			</h:form>
+		</p:panel>
+		<br />
+		<p:panel>
+			<h:form>
+				<h:panelGroup styleClass="centro">
+					<h1>Lista de produto</h1>
+				</h:panelGroup>
+				<h:panelGrid styleClass="centro">
+					<p:commandButton value="Listar" action="#{produtoBeans.listar}"
+						update="table2" styleClass="botao_listar2" />
+				</h:panelGrid>
+			</h:form>
+			<br />
+			<p:dataTable id="table2" value="#{produtoBeans.produtos}" var="p"
+				border="1">
+				<p:column headerText="Id">#{p.id}</p:column>
+				<p:column headerText="Descrição">#{p.descricao}</p:column>
+			</p:dataTable>
+		</p:panel>
+	</p:dialog>
+</h:body>
+</html>

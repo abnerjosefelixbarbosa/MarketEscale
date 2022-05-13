@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>adicionar_produto</title>
+	<link rel="stylesheet" href="resources/css/adicionar_produto.css" />
+</h:head>
+<h:body>
+	<h:form>
+		<p:growl id="messages" />
+		<p:menubar styleClass="menubar">
+			<p:submenu label="Produto" styleClass="submenu">
+				<p:menuitem value="Adicionar" url="adicionar_produto.xhtml" />
+				<p:separator />
+				<p:menuitem value="Atualizar" url="atualizar_produto.xhtml" />
+			</p:submenu>
+			<p:submenu label="Pedido" styleClass="submenu">
+				<p:menuitem value="Gerar" url="gerar_pedido.xhtml" />
+				<p:separator />
+				<p:menuitem value="Alterar" url="alterar_pedido.xhtml" />
+			</p:submenu>
+		</p:menubar>
+	</h:form>
+	<br />
+	<p:panel>
+		<h:form id="form2" styleClass="centro">
+			<p:growl id="messages" autoUpdate="true" />
+			<h:panelGrid>
+				<h:panelGroup styleClass="centro">
+					<h1>Cadastro de produto</h1>
+				</h:panelGroup>
+				<p:outputLabel value="Descrição:" for="descricao" />
+				<p:inputText id="descricao" maxlength="100"
+					value="#{produtoBeans.produto.descricao}" size="100">
+					<f:validateBean />
+				</p:inputText>
+				<p:outputLabel value="Categória:" for="categoria" />
+				<p:inputText id="categoria" maxlength="50"
+					value="#{produtoBeans.produto.categoria}" size="100">
+					<f:validateBean />
+				</p:inputText>
+				<p:outputLabel value="Preço:" for="preco" />
+				<p:inputNumber id="preco" value="#{produtoBeans.produto.preco}"
+					validatorMessage="Preço invalido!" size="100">
+					<f:validateRequired />
+					<f:validateBean />
+				</p:inputNumber>
+				<br />
+				<h:panelGroup styleClass="centro">
+					<p:commandButton value="Adicionar" action="#{produtoBeans.adionar}"
+						update="form2 table1" styleClass="butao_adicionar" />
+				</h:panelGroup>
+			</h:panelGrid>
+		</h:form>
+	</p:panel>
+	<br />
+	<p:panel>
+		<h:panelGrid>
+			<h:form>
+				<h:panelGroup styleClass="centro">
+					<h1>Lista de produto</h1>
+				</h:panelGroup>
+				<h:panelGroup styleClass="centro">
+					<p:commandButton value="Listar" action="#{produtoBeans.listar}"
+						update="table1" styleClass="butao_listar" />
+				</h:panelGroup>
+			</h:form>
+			<p:dataTable id="table1" value="#{produtoBeans.produtos}" var="p"
+				border="1">
+				<p:column headerText="Descrição">#{p.descricao}</p:column>
+				<p:column headerText="Categória">#{p.categoria}</p:column>
+				<p:column headerText="Preço">#{p.preco}</p:column>
+			</p:dataTable>
+		</h:panelGrid>
+	</p:panel>
+</h:body>
+</html>
